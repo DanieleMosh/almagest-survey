@@ -26,6 +26,24 @@ expectations, because no 5 page report can do a whole field justice at depth. Te
 risk an empty corpus: check whether enough published work exists before committing, and offer the
 rung above as a fallback.
 
+The same ladder in a fast moving deep learning subfield, where the rungs are narrower and the
+literature turns over in months rather than years:
+
+| Rung | Example | Corpus shape |
+|---|---|---|
+| Field | interpretability of neural networks | hundreds of papers, only a map is possible |
+| Sub field | mechanistic interpretability of transformers | 100 or more papers, survey by technique family |
+| Topic | sparse autoencoders for feature disentanglement in LLMs | 40 to 60 papers, the sweet spot |
+| Problem | feature absorption and dead latents in sparse autoencoder training | 15 to 30 papers, deep and specific |
+| Technique | top k versus JumpReLU sparsity in SAE architectures | under 15 papers, closer to a related work section |
+
+Two things this example teaches that the soil carbon one does not. First, in fields like this a large
+share of the real literature sits on arXiv, on lab blogs, and in workshop tracks rather than in
+indexed journals, so a DOI first corpus will silently miss the frontier: lean on the arXiv API, record
+arXiv ids alongside DOIs, and say plainly in the report what fraction of the corpus is preprints that
+have not been peer reviewed. Second, the vocabulary shifts fast, so confirm current terms during recon
+rather than trusting the phrasing in the request.
+
 ### How to ask
 
 Offer rungs as concrete named alternatives, never as abstract labels. This works:
@@ -164,6 +182,7 @@ file. Recommended columns, adapt vocabularies to the field during phase 1:
 | `metric_name`, `metric_value` | headline number as reported |
 | `eval_protocol` | split type: random, spatial or temporal block, cross site, forward validation |
 | `evidence_level` | `full-text`, `abstract`, or `metadata`: how much you actually read |
+| `peer_reviewed` | true or false: false for records that exist only as preprints. Separate axis from `evidence_level` |
 | `notes` | free text, including `[UNVERIFIED]` flags |
 
 Two principles. **Blank, not inferred**: a cell the paper does not state stays empty. **Counts trace

@@ -16,6 +16,13 @@ Record per paper how much you actually read, and let that bound what you claim:
 Most of a typical corpus will be abstract level, because major publishers block scripted access even
 for open access articles. That is fine: say so in the report rather than papering over it.
 
+**Peer review status is a separate axis from evidence level.** In fast moving computational fields the
+frontier lives on arXiv months or years before journal publication, and excluding preprints would
+misrepresent the state of the art. Include them, but record the status: keep an `arxiv_id` alongside
+`doi`, mark records that exist only as preprints, and state the preprint share in the report. A result
+that has not been peer reviewed can still be the most important in the corpus, and the reader is
+entitled to know which is which.
+
 ## Reference verification
 
 Run after corpus assembly, and again after any edit that touches identity columns:
