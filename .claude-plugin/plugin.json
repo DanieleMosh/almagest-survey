@@ -1,0 +1,6 @@
+{
+  "name": "almagest-survey",
+  "skills": [
+    "./skills/literature-survey"
+  ]
+}
