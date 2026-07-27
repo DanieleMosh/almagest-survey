@@ -1,0 +1,30 @@
+{
+  "name": "almagest-survey",
+  "owner": {
+    "name": "DanieleMosh"
+  },
+  "metadata": {
+    "description": "Claude skills for automated literature surveys: verified corpora, honest metrics, minimal figures, and a short PDF report of the state of the art",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "almagest-survey",
+      "source": "./",
+      "description": "literature-survey: run a state of the art survey on any STEM topic with parallel research agents and an overseer, a DOI verified corpus, Tufte style seaborn figures, extracted hypotheses, and a compiled LaTeX report of about 5 pages",
+      "version": "1.0.0",
+      "author": {
+        "name": "DanieleMosh"
+      },
+      "keywords": [
+        "research",
+        "literature-survey",
+        "sota",
+        "verification",
+        "latex",
+        "seaborn"
+      ],
+      "category": "research"
+    }
+  ]
+}

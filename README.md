@@ -27,12 +27,19 @@ flowchart LR
 
 ## Install
 
+In Claude Code:
+
+```
+/plugin marketplace add DanieleMosh/almagest-survey
+/plugin install almagest-survey@almagest-survey
+```
+
+While the repo is private, your git credentials must have access to it. Alternatively, clone and symlink:
+
 ```bash
 git clone git@github.com:DanieleMosh/almagest-survey.git
 ln -s "$(pwd)/almagest-survey/skills/literature-survey" ~/.claude/skills/literature-survey
 ```
-
-Or copy `skills/literature-survey/` into your `.claude/skills/` directory.
 
 ## Skills
 
