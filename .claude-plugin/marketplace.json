@@ -11,7 +11,7 @@
     {
       "name": "almagest-survey",
       "source": "./",
-      "description": "literature-survey: run a state of the art survey on any STEM topic with parallel research agents and an overseer, a DOI verified corpus, Tufte style seaborn figures, extracted hypotheses, and a compiled LaTeX report of about 5 pages. Example topics: virtual cell models for predicting cellular perturbation response, soil organic carbon prediction from hyperspectral imagery, quantum error correction codes, sim to real transfer for legged robot locomotion, mineral prospectivity mapping, battery electrolyte discovery",
+      "description": "literature-survey: run a state of the art survey on any STEM topic with parallel research agents and an overseer, a DOI verified corpus, Tufte style seaborn figures, extracted hypotheses, and a compiled LaTeX report of about 5 pages. Example topics: mechanistic interpretability of large language models, virtual cell models for predicting cellular perturbation response, soil organic carbon prediction from hyperspectral imagery, quantum error correction codes, sim to real transfer for legged robot locomotion, mineral prospectivity mapping, battery electrolyte discovery",
       "version": "1.0.0",
       "author": {
         "name": "DanieleMosh"
@@ -23,6 +23,8 @@
         "verification",
         "latex",
         "seaborn",
+        "deep-learning",
+        "interpretability",
         "computational-biology",
         "remote-sensing",
         "physics",
