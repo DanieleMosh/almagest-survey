@@ -1,8 +1,6 @@
 <p align="center">
-  <img src="assets/banner.png" alt="Almagest" width="640">
+  <img src="assets/banner.png" alt="almagest-survey, Claude skill for automated literature surveys" width="900">
 </p>
-
-# Almagest
 
 Claude skills for automated literature surveys: verified corpora, honest metrics, minimal figures, and a short PDF report that tells you who did it best and where the field is heading.
 
