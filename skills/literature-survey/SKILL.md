@@ -33,16 +33,19 @@ A survey aimed at the wrong altitude is wasted work: a request for "AI in medici
 "uncertainty calibration in histopathology foundation models" need entirely different corpora. So do
 not guess the depth. Converge on it.
 
-**Loop `AskUserQuestion` until you can pass the readiness test below.** Usually 2 or 3 rounds, rarely
-1, occasionally 4. Each round is at most 4 questions, and each question must be one whose answer
-changes what you would harvest. Stop as soon as the test passes: further questions are then friction,
-not rigor.
+**Loop `AskUserQuestion` until you can pass the readiness test below.** Treat it as exploration: each
+round should teach you something that reshapes the next question, rather than filling slots in a form.
+Usually 2 or 3 rounds, rarely 1, occasionally 4. Each round is at most 4 questions, and each question
+must be one whose answer changes what you would harvest. Stop as soon as the test passes: further
+questions are then friction, not rigor.
 
-**Round 1, locate the altitude.** Offer the topic at 3 or 4 concrete levels, from field down to
-specific problem, and let the user point at one. Name real sub areas rather than abstract labels like
-"broad" or "narrow", because the user recognizes their own problem faster than they classify it. Ask
-in the same round what is explicitly out of scope, since exclusions are usually sharper in the user's
-mind than inclusions.
+**Round 1, locate the altitude.** Offer the topic at 3 or 4 levels, from field down to specific
+problem. Asking directly how deep to go (a broad map, a focused survey, a deep dive on one problem) is
+a fine opening move when you are still orienting: attach a rough corpus size to each level so the
+tradeoff is legible. Once you know enough to name real sub areas, prefer naming them, because a user
+recognizes their own problem faster than they classify its abstraction level, and their wording tells
+you the field's vocabulary. Ask in the same round what is explicitly out of scope, since exclusions
+are usually sharper in the user's mind than inclusions.
 
 **Round 2, resolve what round 1 exposed.** Typically: which sub problems or method families are in
 scope, time window (default: last 5 years, weighted to the last 2), emphasis (build oriented,

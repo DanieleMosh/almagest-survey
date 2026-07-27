@@ -46,20 +46,34 @@ rather than trusting the phrasing in the request.
 
 ### How to ask
 
-Offer rungs as concrete named alternatives, never as abstract labels. This works:
+Scoping is exploration, not interrogation. You are discovering the shape of what the user wants, and
+the right question depends on how much you already know about their intent.
+
+**When you are still orienting**, an abstraction level question is the right opening move. Asking
+whether they want a broad map, a focused survey, or a deep dive into one problem is legitimate and
+often the fastest way to halve the space. Make the levels mean something concrete by attaching what
+each buys:
 
 > **How deep should this go?**
-> - *Soil property retrieval from hyperspectral data, all properties* (broadest, roughly 100 papers,
->   organized by method family)
+> - *Broad map of the field* (roughly 100 papers, organized by method family, shallow on each)
+> - *Focused survey of one topic* (roughly 50 papers, the usual choice)
+> - *Deep dive on a single problem* (roughly 20 papers, with real technical detail)
+
+**Once you know the altitude**, switch to concrete named alternatives, because that is where you learn
+vocabulary and catch a mismatch between their words and their intent:
+
+> **Which slice of soil spectroscopy?**
+> - *Soil property retrieval from hyperspectral data, all properties* (broadest, roughly 100 papers)
 > - *Soil organic carbon specifically, lab through spaceborne* (recommended, roughly 50 papers)
 > - *SOC from spaceborne sensors only: EnMAP, PRISMA, EMIT* (roughly 25 papers, deeper on each)
 > - *Domain shift between spectral libraries and satellite scenes* (roughly 20 papers, one problem)
 
-This does not work: "broad, medium, or narrow". The user cannot map those onto their own question, and
-you learn nothing about vocabulary from the answer.
+Either form works, and a good scoping loop often uses both: abstract to find the altitude, concrete to
+fix the boundary. What matters is that every option carries its rough corpus size, since that is what
+makes the tradeoff legible, and that you offer named sub areas as soon as you know enough to name
+them, because a user recognizes their own problem faster than they classify its abstraction level.
 
-Each option should carry its rough corpus size, because that is what makes the tradeoff legible. Ask
-about exclusions in the same round: users hold sharper opinions about what they do not want.
+Ask about exclusions early: users hold sharper opinions about what they do not want.
 
 ### Reading the answers
 
