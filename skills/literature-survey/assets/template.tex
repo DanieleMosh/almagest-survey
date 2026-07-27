@@ -1,0 +1,121 @@
+% Almagest literature survey report template.
+% Fill every "% ALMAGEST:" slot; delete the guidance comments as you go.
+% Page budget (references/report.md): 1 TLDR, 2 taxonomy, 3 comparison,
+% 4 data provenance, 5 hypotheses + verification notes + references.
+\documentclass[10pt]{article}
+
+\usepackage[a4paper, margin=2.2cm]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{inkgray}{HTML}{52514E}
+\definecolor{boxrule}{HTML}{2A78D6}
+
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{0pt}
+
+% One clickable DOI per bibliography entry.
+\newcommand{\doilink}[1]{\href{https://doi.org/#1}{\texttt{doi:#1}}}
+
+\title{\vspace{-1.2em}\LARGE
+  % ALMAGEST: title, "The State of the Art in <topic>"
+  The State of the Art in TOPIC
+  \vspace{-0.4em}}
+\author{\normalsize
+  % ALMAGEST: attribution line, e.g. "An Almagest survey, compiled <date>"
+  An Almagest survey}
+\date{\normalsize\today}
+
+\begin{document}
+\maketitle
+\vspace{-1.5em}
+
+% ---------------------------------------------------------------- page 1
+\begin{abstract}
+\noindent
+% ALMAGEST: one paragraph. What the field is, what was surveyed, the one
+% sentence headline finding. Include the corpus line: N papers, window,
+% how many DOI verified, how many read at full text.
+\end{abstract}
+
+\medskip
+\noindent
+\fcolorbox{boxrule}{white}{%
+\begin{minipage}{0.96\textwidth}
+\textbf{TL;DR}
+\begin{itemize}\setlength\itemsep{1pt}
+  % ALMAGEST: 8 to 12 bullets a domain expert scans in a minute. Each one
+  % is a finding with a number, not a topic sentence. Lead with what the
+  % field solves for, who did it best (and the validity caveat), the
+  % dominant metric and what it hides, and the biggest verified gap.
+  \item Finding one.
+  \item Finding two.
+\end{itemize}
+\end{minipage}}
+
+% ---------------------------------------------------------------- page 2
+\section{What the field solves for}
+% ALMAGEST: the real task behind the benchmarks, who consumes the outputs,
+% and what the outputs look like (shape, units, resolution). Counts trace
+% to papers.csv.
+
+\section{Taxonomy and trajectory}
+% ALMAGEST: method families against tasks; the chronology. Reference the
+% evolution figure.
+\begin{figure}[htbp]
+  \centering
+  % ALMAGEST: \includegraphics[width=.9\textwidth]{figures/02_evolution.pdf}
+  \caption{% ALMAGEST: caption states the takeaway, not the axes.
+  }
+\end{figure}
+
+% ---------------------------------------------------------------- page 3
+\section{Who did it best, and whether the comparison holds}
+% ALMAGEST: the comparison table. Group rows by evaluation protocol so
+% incomparable numbers are never adjacent. Bold at most one result.
+\begin{table}[htbp]
+  \centering\small
+  \caption{% ALMAGEST: caption includes the validity caveat.
+  }
+  \begin{tabular}{@{}llllp{4.2cm}@{}}
+    \toprule
+    Paper & Method & Protocol & Metric & Caveat \\
+    \midrule
+    % ALMAGEST: rows
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+% ALMAGEST: one paragraph on the dominant metric and its failure modes;
+% one on decision relevant alternatives. Reference the comparison figure.
+
+% ---------------------------------------------------------------- page 4
+\section{Data and ground truth}
+% ALMAGEST: where training data comes from, label provenance and counts,
+% access terms worth knowing. Reference the coverage/gap matrix figure and
+% name the empty cells explicitly: confirmed empty cells are findings.
+
+% ---------------------------------------------------------------- page 5
+\section{Hypotheses}
+% ALMAGEST: 3 to 5, mined from future work sections plus verified gaps.
+\begin{enumerate}\setlength\itemsep{2pt}
+  \item \textbf{H1.} % claim. Evidence with citation. \emph{Falsified if:} ...
+\end{enumerate}
+
+\section{Outlook}
+% ALMAGEST: one or two paragraphs, where the field is building toward.
+
+\subsection*{Verification notes}
+% ALMAGEST: mandatory. Records that are abstract only; negative findings
+% worded as "not found in this scan"; citations corrected or dropped
+% during verification; the note that metrics are as self reported.
+
+\begin{thebibliography}{99}\small
+  % ALMAGEST: only works present in refs_verified.csv as resolved.
+  % \bibitem{key} Author, A. (Year). Title. \emph{Venue}. \doilink{10.xxxx/xxxxx}
+\end{thebibliography}
+
+\end{document}

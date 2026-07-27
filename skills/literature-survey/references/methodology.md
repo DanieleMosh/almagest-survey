@@ -1,0 +1,142 @@
+# Methodology
+
+The full procedure behind SKILL.md: agent topology, prompt templates, the corpus schema, a worked
+example, stopping rules, and the loop pattern for living surveys.
+
+## Agent topology
+
+Three roles, strict boundaries:
+
+| Role | Who | Owns | Never does |
+|---|---|---|---|
+| Coordinator | the main session | strand design, the merge, `papers.csv`, all final judgment | outsource the merge, or accept agent claims unchecked |
+| Survey agents | 2 to 4 background agents | one strand each, structured records | write to the corpus, see each other's output |
+| Overseer | 1 background agent, launched after the merge | auditing the merged corpus | write to the corpus directly |
+
+Launch all survey agents in a single message so they run concurrently. Launch the overseer only
+after the merge, and keep its prompt free of the harvest prompts so its audit is independent.
+
+### Choosing strands
+
+Split by the structure of the field, not by keyword. Good splits: sub problem (method families,
+application areas), plus always one strand for **data, benchmarks, and infrastructure**, because no
+method strand will cover provenance well. Two strands minimum, four maximum: beyond four the merge
+cost exceeds the harvest gain.
+
+### Survey agent prompt template
+
+Fill the bracketed parts, keep the rest verbatim:
+
+```
+You are researching the state of the art in [STRAND] within [TOPIC], for a literature
+survey by a senior researcher. Focus on [TIME WINDOW], weighted to the most recent 2 years.
+
+Use the metadata APIs as your backbone: api.crossref.org, api.openalex.org,
+api.semanticscholar.org, and the arXiv API. Web search is a bonus, not a dependency.
+
+For EACH significant paper (target [N] papers), return a structured record:
+- title, first author, year, venue, DOI (only if you actually resolved it)
+- WHAT IT SOLVES FOR: the real task behind the benchmark, and who uses the output
+- METHOD: family plus the specific architecture or algorithm
+- INPUTS: data sources, modalities, named instruments or datasets
+- OUTPUT: what the model emits, with shape, units, and resolution
+- GROUND TRUTH: where labels came from, and how many
+- METRIC and value, plus the evaluation protocol (split type, test set size)
+- FUTURE WORK: what the authors themselves say should happen next, 1 or 2 sentences
+- LIMITATIONS the authors admit
+
+Hard rules: mark any field you could not confirm as [UNVERIFIED] rather than guessing.
+Never fabricate a DOI. Distinguish clearly between what you verified by reading and what
+you inferred. Report negative findings ("I found no work on X") explicitly, they are
+valuable.
+```
+
+### Overseer prompt template
+
+```
+You are auditing a merged literature corpus on [TOPIC]. You have NOT seen how it was
+collected. Independently:
+
+1. Re resolve a random sample of [10 to 20] DOIs via api.crossref.org. Report any that
+   fail or whose metadata (title, year) disagrees with the corpus record.
+2. Attack every negative claim in the corpus summary ("no work exists on X") with fresh
+   targeted queries. Report anything that contradicts them.
+3. Sweep for internal contradictions: same paper recorded twice with different facts,
+   metric values that disagree with the cited venue or year, implausible claims.
+4. Answer: what is missing? Which sub field, venue, geography, or data modality does this
+   corpus not cover at all?
+
+Return findings as a correction list. Do not fix anything yourself.
+```
+
+Route every overseer finding through the coordinator: verify it, then correct the corpus or launch a
+follow up mini strand. An overseer claim is itself unverified until you check it.
+
+## Corpus schema
+
+One row per paper in `data/papers.csv`. Every figure and every count in the report derives from this
+file. Recommended columns, adapt vocabularies to the field during phase 1:
+
+| Column | Content |
+|---|---|
+| `key` | citation slug, for example `smith2025socmapping` |
+| `title`, `first_author`, `year`, `venue`, `doi`, `arxiv_id` | identity; `doi` verified before publication |
+| `task` | controlled vocabulary, what the paper predicts or produces |
+| `method_family` | controlled vocabulary: for example `classical-ML`, `CNN`, `transformer`, `foundation-SSL`, `physics-based` |
+| `method_detail` | free text |
+| `inputs` | pipe separated modalities and named instruments or datasets |
+| `output_type` | controlled vocabulary, with units and resolution in `output_detail` |
+| `ground_truth` | label source and count |
+| `metric_name`, `metric_value` | headline number as reported |
+| `eval_protocol` | split type: random, spatial or temporal block, cross site, forward validation |
+| `evidence_level` | `full-text`, `abstract`, or `metadata`: how much you actually read |
+| `notes` | free text, including `[UNVERIFIED]` flags |
+
+Two principles. **Blank, not inferred**: a cell the paper does not state stays empty. **Counts trace
+to the CSV**: if the report says "14 of 52 papers use spatial cross validation", that number is a
+query on this file, not a recollection.
+
+## Worked example: soil organic carbon prediction from hyperspectral imagery
+
+A remote sensing topic, shown end to end at sketch level.
+
+**Scope.** Topic: estimating topsoil organic carbon (SOC) from hyperspectral data, lab, field,
+airborne, and spaceborne. Out of scope: SOC flux modeling, non optical sensors. Window: 2019 to
+present, weighted to the last 2 years.
+
+**Recon.** Seed via OpenAlex: reviews of soil spectroscopy plus a recent EnMAP or PRISMA SOC paper.
+Taxonomy dimensions fixed early: sensor class (lab spectrometer, field, airborne such as AVIRIS or
+HySpex, spaceborne such as EnMAP, PRISMA, EMIT), method family (PLSR, Cubist or random forest, 1D
+CNN, transformer, spectral foundation model), evaluation protocol (random CV, spatial CV, cross site
+transfer), and the metric trio common in this field: R2, RMSE in g per kg, and RPIQ.
+
+**Strands.** (1) Spaceborne and airborne hyperspectral SOC mapping. (2) Chemometrics and deep
+learning on soil spectral libraries, LUCAS, ICRAF, OSSL. (3) Data and infrastructure: spectral
+libraries, their sizes and licenses, benchmark protocols, sensor status.
+
+**What the records surface.** What they solve for: SOC stock baselines for carbon markets and soil
+health policy, not laboratory curiosity. Output shape: SOC maps in g per kg at 30 m for spaceborne
+work, point predictions for library work. Ground truth: LUCAS topsoil points and national soil
+surveys. The validity question phase 5 must ask: random CV on a spectral library inflates skill
+versus spatial CV on a mapped region, and cross site transfer numbers are far lower than within site
+ones, so a single "best R2" claim is close to meaningless without the protocol column.
+
+**Hypothesis sketch, the phase 6 shape.** "Spectral foundation models pretrained on large soil
+libraries transfer to spaceborne SOC mapping with less than half the calibration data of PLSR:
+supported by early library scale results `[cite]`; falsified if a matched calibration budget
+comparison on EnMAP scenes shows no significant RMSE gain."
+
+## Stopping rule
+
+Stop harvesting when a strand's marginal query returns mostly papers you already hold, duplicates
+across strands exceed roughly a third of new returns, or the corpus target is met with every
+taxonomy cell either populated or confirmed empty. Confirmed empty cells are findings, record them.
+
+## Loops: the living survey
+
+For fast moving fields, offer the user a recurring re run. Each iteration: re harvest with the same
+strand prompts, diff new `papers.csv` against the previous run by DOI, verify only the new rows,
+regenerate figures, and append a dated changelog section to the report listing new papers and any
+conclusion that moved. Schedule with the host's loop or scheduling facility when available; otherwise
+leave a `SURVEY_STATE.md` noting the last run date and the diff command, so any future session can
+resume.
