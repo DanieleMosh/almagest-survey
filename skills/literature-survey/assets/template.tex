@@ -10,15 +10,25 @@
 \usepackage{xcolor}
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
+\usepackage{caption}
+\usepackage{float}
 
 \definecolor{inkgray}{HTML}{52514E}
 \definecolor{boxrule}{HTML}{2A78D6}
 
 \setlength{\parskip}{3pt}
 \setlength{\parindent}{0pt}
+\captionsetup{font=small, labelfont=bf}
 
-% One clickable DOI per bibliography entry.
-\newcommand{\doilink}[1]{\href{https://doi.org/#1}{\texttt{doi:#1}}}
+% In a 5 page report the default float placement strands figures on their own
+% pages and opens large gaps. Floats below use [H] to stay where they are written.
+\setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\intextsep}{10pt plus 2pt minus 2pt}
+
+% One clickable DOI per bibliography entry. \detokenize keeps underscores and
+% other TeX specials literal: Springer chapter DOIs such as
+% 10.1007/978-3-032-09530-5_26 otherwise fail to compile with "Missing $".
+\newcommand{\doilink}[1]{\href{https://doi.org/#1}{\texttt{doi:\detokenize{#1}}}}
 
 \title{\vspace{-1.2em}\LARGE
   % ALMAGEST: title, "The State of the Art in <topic>"
@@ -65,7 +75,7 @@
 \section{Taxonomy and trajectory}
 % ALMAGEST: method families against tasks; the chronology. Reference the
 % evolution figure.
-\begin{figure}[htbp]
+\begin{figure}[H]
   \centering
   % ALMAGEST: \includegraphics[width=.9\textwidth]{figures/02_evolution.pdf}
   \caption{% ALMAGEST: caption states the takeaway, not the axes.
@@ -76,7 +86,7 @@
 \section{Who did it best, and whether the comparison holds}
 % ALMAGEST: the comparison table. Group rows by evaluation protocol so
 % incomparable numbers are never adjacent. Bold at most one result.
-\begin{table}[htbp]
+\begin{table}[H]
   \centering\small
   \caption{% ALMAGEST: caption includes the validity caveat.
   }
