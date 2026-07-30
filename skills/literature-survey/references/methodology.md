@@ -129,6 +129,31 @@ application areas), plus always one strand for **data, benchmarks, and infrastru
 method strand will cover provenance well. Two strands minimum, four maximum: beyond four the merge
 cost exceeds the harvest gain.
 
+### The adjacent discipline strand
+
+Every applied field has a twin working the same problem under different words, publishing in different
+venues, and citing nobody in common. A survey that searches only the field's own vocabulary will miss
+that twin entirely, and the twin is often where the methodological frontier sits.
+
+**Spend one strand crossing the boundary whenever the topic is applied.** Give that agent the problem
+stated in plain physical or mathematical terms, deliberately stripped of the field's jargon, and tell
+it to search the computational and statistical literature: arXiv `cs.LG`, `cs.AI`, `stat.ME`, applied
+mathematics, operations research, and the robotics or control literature when the task involves
+sequencing actions.
+
+Worked example of what this catches. A survey of mineral prospectivity searched the geology vocabulary
+across four strands and found no work on planning which hole to drill next. The relevant paper existed:
+a partially observable Markov decision process agent for exploration drill planning, posted to
+`cs.AI`, using the words "data acquisition" and "hypothesis falsification" rather than "prospectivity",
+carrying no journal DOI, and reporting deployment on a real discovery. Four geology strands could not
+have found it, because it shares almost no vocabulary with the field it serves.
+
+Translate the topic before you write the prompt. "Mineral prospectivity" becomes "spatial prediction of
+rare events from multimodal geospatial covariates with very few positive labels". "Which hole to drill"
+becomes "sequential experimental design under model uncertainty". "Soil organic carbon from
+hyperspectral" becomes "regression from high dimensional correlated spectra with domain shift". Search
+the translation, not the label.
+
 ### Survey agent prompt template
 
 Fill the bracketed parts, keep the rest verbatim:
@@ -171,6 +196,11 @@ collected. Independently:
    metric values that disagree with the cited venue or year, implausible claims.
 4. Answer: what is missing? Which sub field, venue, geography, or data modality does this
    corpus not cover at all?
+5. Restate the topic in a different discipline's vocabulary, stripped of this field's
+   jargon, and search that instead. If the corpus is applied work, search the
+   computational and statistical literature for the same problem: arXiv cs.LG, cs.AI,
+   stat.ME, operations research, control and robotics. Report anything relevant that
+   the corpus missed because it uses different words for the same thing.
 
 Return findings as a correction list. Do not fix anything yourself.
 ```

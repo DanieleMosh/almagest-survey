@@ -62,7 +62,9 @@ Proceed only when you can write all five of these down without hedging:
 1. **One sentence** describing exactly what the survey covers, at a granularity a domain expert would
    call neither vague nor overly narrow.
 2. **The taxonomy axes** you will populate: method family, task, data modality, evaluation metric.
-3. **Three or four concrete search queries** you expect to be productive, in the field's own vocabulary.
+3. **Three or four concrete search queries** you expect to be productive in the field's own
+   vocabulary, plus **one restatement of the same problem in another discipline's terms**, since the
+   twin literature rarely shares the field's words.
 4. **What is out of scope**, stated as explicitly as what is in scope.
 5. **A named example paper** that clearly belongs, and one adjacent paper that clearly does not.
 
@@ -80,7 +82,10 @@ Cheap checks that stop expensive mistakes:
 3. Empirically test 2 or 3 PDF routes for this field's dominant publishers. Routes drift, so test
    rather than assume. See `references/verification.md`.
 4. Fix the taxonomy dimensions now: method family, task, data modality, evaluation metric. Every
-   agent will populate these columns, so they must be decided before the harvest, not after.
+   agent will populate these columns, so they must be decided before the harvest, not after. Ask what
+   the *neighbouring* task is that your vocabulary would exclude: a taxonomy built from one community's
+   words has no cell for the adjacent community's work, so that work stays invisible even when an
+   agent finds it.
 5. Sanity check the scope against reality. If a seed query at the agreed rung returns far more or far
    fewer papers than `data/scope.md` predicts, the rung was wrong: go back to the user with one
    corrective question rather than harvesting a corpus that is unusably broad or nearly empty.
@@ -91,10 +96,11 @@ Speed comes from parallelism. Trust comes from the overseer. Full prompt templat
 `references/methodology.md`.
 
 **Coordinator (you, the main session).** Split the topic into 2 to 4 strands plus one strand for
-data, benchmarks, and infrastructure. Launch them as background agents **in a single message** so
-they run concurrently. Write the identical record schema into every agent prompt. When they return,
-you merge, deduplicate by DOI, and resolve disagreements. Never delegate the merge or the final
-judgment.
+data, benchmarks, and infrastructure, and for any applied topic one strand that searches the
+**adjacent computational discipline** in its own vocabulary rather than the field's. Launch them as
+background agents **in a single message** so they run concurrently. Write the identical record schema
+into every agent prompt. When they return, you merge, deduplicate by DOI, and resolve disagreements.
+Never delegate the merge or the final judgment.
 
 **Survey agents.** Each returns structured records per paper: what the method solves for, output
 shape, training data provenance, metric and value, evaluation protocol, and **the paper's own stated
@@ -103,8 +109,10 @@ future work**. Unverifiable fields come back tagged `[UNVERIFIED]`, never guesse
 **Overseer.** After the merge, launch one auditor agent that has not seen the harvest prompts. It
 independently re samples DOIs, attacks every negative claim ("no work exists on X") with fresh
 targeted queries, sweeps for contradictions between strands, and answers "which sub field, venue, or
-modality did nobody cover". Its findings return to you as corrections or as a follow up mini strand.
-Overseer output never writes to the corpus directly.
+modality did nobody cover". Require it to restate the topic in another discipline's vocabulary and
+search that, since a corpus drawn from one community's words is blind to the community next door. Its
+findings return to you as corrections or as a follow up mini strand. Overseer output never writes to
+the corpus directly.
 
 Budget note: agents consume the session web search budget quickly. The metadata APIs (Crossref,
 OpenAlex, Semantic Scholar, arXiv) keep working after it is exhausted, so lean on them.
