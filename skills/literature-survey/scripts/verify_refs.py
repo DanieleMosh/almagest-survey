@@ -33,14 +33,25 @@ ATOM = {"a": "http://www.w3.org/2005/Atom"}
 
 
 def check_doi(doi: str, session: requests.Session) -> dict:
-    try:
-        r = session.get(CROSSREF.format(doi=doi), timeout=30)
-    except requests.RequestException as exc:
-        return {"status": "ERROR", "detail": str(exc)[:100]}
-    if r.status_code == 404:
-        return {"status": "NOT_FOUND", "detail": "Crossref 404"}
-    if r.status_code != 200:
-        return {"status": f"HTTP_{r.status_code}", "detail": ""}
+    # Retry transient refusals: a rate limited request is not a missing paper.
+    r = None
+    for attempt in range(4):
+        try:
+            r = session.get(CROSSREF.format(doi=doi), timeout=45)
+            if r.status_code == 404:
+                return {"status": "NOT_FOUND", "detail": "Crossref 404"}
+            if r.status_code == 200:
+                break
+            if r.status_code in (429, 500, 502, 503):
+                time.sleep(3 * (attempt + 1))
+                continue
+            return {"status": f"HTTP_{r.status_code}", "detail": ""}
+        except requests.RequestException as exc:
+            if attempt == 3:
+                return {"status": "ERROR", "detail": str(exc)[:100]}
+            time.sleep(3 * (attempt + 1))
+    if r is None or r.status_code != 200:
+        return {"status": "ERROR", "detail": "Crossref unreachable after retries"}
     m = r.json()["message"]
     year = (m.get("issued", {}).get("date-parts") or [[None]])[0][0]
     return {
@@ -52,12 +63,25 @@ def check_doi(doi: str, session: requests.Session) -> dict:
 
 
 def check_arxiv(aid: str, session: requests.Session) -> dict:
-    try:
-        r = session.get(ARXIV.format(aid=aid), timeout=30)
-    except requests.RequestException as exc:
-        return {"status": "ERROR", "detail": str(exc)[:100]}
-    if r.status_code != 200:
-        return {"status": f"HTTP_{r.status_code}", "detail": ""}
+    # arXiv throttles aggressively once a run has made many requests, and a
+    # transient refusal is not evidence that the paper does not exist. Retry
+    # with backoff before reporting a failure.
+    r = None
+    for attempt in range(4):
+        try:
+            r = session.get(ARXIV.format(aid=aid), timeout=45)
+            if r.status_code == 200:
+                break
+            if r.status_code in (429, 500, 502, 503):
+                time.sleep(3 * (attempt + 1))
+                continue
+            return {"status": f"HTTP_{r.status_code}", "detail": ""}
+        except requests.RequestException as exc:
+            if attempt == 3:
+                return {"status": "ERROR", "detail": str(exc)[:100]}
+            time.sleep(3 * (attempt + 1))
+    if r is None or r.status_code != 200:
+        return {"status": "ERROR", "detail": "arXiv unreachable after retries"}
     try:
         entry = ET.fromstring(r.text).find("a:entry", ATOM)
     except ET.ParseError:
