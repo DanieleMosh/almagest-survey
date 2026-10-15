@@ -46,7 +46,7 @@ the art on something.
 
 | Skill | What it does |
 |---|---|
-| [`literature-survey`](skills/literature-survey/SKILL.md) | Runs a state of the art survey on any STEM topic: parallel research agents with an overseer, a DOI verified corpus, open access PDF acquisition, Tufte style seaborn figures, extracted hypotheses, and a compiled LaTeX report of about 5 pages. |
+| [`literature-survey`](skills/literature-survey/SKILL.md) | Runs a state of the art survey on any STEM topic: parallel research agents with an overseer, a DOI verified corpus, open access PDF acquisition, Tufte style seaborn figures, attributed figure panels cropped from the papers, extracted hypotheses, and a compiled LaTeX report of about 5 pages. |
 
 ## What a run leaves behind
 
@@ -58,6 +58,7 @@ the art on something.
   data/refs_verified.csv Crossref and arXiv resolution result for every reference
   papers/                retrieved open access PDFs, plus MANIFEST.md for the rest
   figures/               regenerated from papers.csv, so prose and plots cannot drift
+  figures/snapshots/     key panels cropped from the papers (data samples, pipelines, outputs), cited
 ```
 
 Every DOI is resolved against Crossref before it reaches the report, unverifiable fields stay blank

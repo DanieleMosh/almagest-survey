@@ -24,6 +24,7 @@ plausible fabricated number is a defect that propagates into the reader's work.
   papers/               retrieved open access PDFs
   papers/MANIFEST.md    every paper: retrieved, or blocked with a DOI link
   figures/              4 to 6 figures, regenerated from papers.csv
+  figures/snapshots/    3 to 8 panels cropped from the papers, plus panels.csv
   scripts/make_figures.py
 ```
 
@@ -169,6 +170,24 @@ that would kill it. Keep this tight; it is the most useful half page in the repo
 and plots cannot drift. Write `scripts/make_figures.py` using the style block and the rules in
 `references/plotting.md`, then **look at every figure you generate** before accepting it.
 
+**Then show the task, not only the statistics.** A newcomer cannot judge a benchmark table
+until they have seen the data and the method. From the open access PDFs retrieved in phase 4,
+crop 3 to 8 panels that carry crucial information: what an input sample looks like (and how the
+domains or test conditions differ), what the ground truth or sensor setup is, the canonical
+pipeline diagram of the method family that wins, and qualitative outputs including failure cases.
+Prefer panels from the benchmark's own dataset paper and from the top ranked methods.
+
+```bash
+uv run scripts/paper_figures.py find papers/                        # captions per page
+uv run scripts/paper_figures.py preview papers/KEY.pdf 3 --out figures/snapshots/_preview
+uv run scripts/paper_figures.py crop figures/snapshots/panels.csv   # boxes in PDF points
+```
+
+Pick boxes on the gridded previews, record them in `figures/snapshots/panels.csv`, crop, and
+**look at every crop**: no stray caption text, no clipped axes or legends. Every panel caption
+names its source with a citation, and only panels from retrieved open access papers are used.
+Rules and layout in `references/plotting.md` and `references/report.md`.
+
 ## Phase 8, report
 
 Fill `assets/template.tex` following the page budget in `references/report.md`, then:
@@ -185,7 +204,10 @@ exits cleanly and tells the user how to compile, and you deliver the `.tex` plus
 - Every number in the prose matches `papers.csv`. Recount rather than trust the draft.
 - Negative claims are re checked, and worded as "no published work found in this scan", never as
   proof of absence.
-- Every referenced figure file exists; the PDF compiles at roughly 5 pages.
+- Every referenced figure file exists; the PDF compiles at roughly 5 pages, 6 to 7 with the paper
+  panels.
+- Every paper panel is attributed in its caption, comes from a retrieved open access PDF, and
+  matches what the surrounding text says it shows.
 - Every DOI in the bibliography appears in the verification output as resolved.
 - State the corpus caveats plainly: how many records are abstract only, how many lack a DOI.
 - **The corpus honors `data/scope.md`.** Spot check that papers fit the scope sentence and that
@@ -204,5 +226,5 @@ loops section in `references/methodology.md`.
 |---|---|
 | `references/methodology.md` | Setting up agents, writing prompts, defining the corpus schema, worked examples |
 | `references/verification.md` | Verifying references, acquiring PDFs, judging whether a metric is trustworthy |
-| `references/plotting.md` | Writing the figure script |
+| `references/plotting.md` | Writing the figure script, and cropping paper figure panels |
 | `references/report.md` | Filling the LaTeX template and holding the page budget |

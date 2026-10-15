@@ -83,6 +83,40 @@ Dual axes. Rainbow or unordered multi hue ramps for magnitude. 3D of any kind. P
 two way share. Accuracy bar charts on imbalanced tasks. Legends restating a single series. Decorated
 themes, gradients, shadows. Any figure whose numbers do not come from `papers.csv`.
 
+## Paper figure panels
+
+Statistics plots summarize the corpus; paper panels show the reader what the task looks like.
+A survey needs both: a comparison table is hard to judge until the reader has seen the
+inputs, the ground truth, and what a good and a bad output look like.
+
+**What to crop**, in priority order, 3 to 8 panels in total:
+
+1. **Input samples across conditions**: the benchmark's sample montage, especially one that
+   contrasts domains, sensors, or test conditions. Usually in the dataset paper's first figure.
+2. **How ground truth is made**: the sensor rig, testbed, annotation tool, or survey protocol.
+3. **The canonical pipeline**: the architecture diagram of the method family that wins, ideally
+   from the paper that established the template.
+4. **Qualitative outputs**: predictions overlaid on inputs, including failure cases when a paper
+   shows them. Failure modes are often the most informative panel in the survey.
+5. **Downstream use**: how the output is consumed, for example a system diagram or trajectory.
+
+**Mechanics**: `scripts/paper_figures.py`. `find` lists captions per page, `preview` renders
+pages at 72 dpi with a 50 pt grid so the grid labels are the box coordinates, `crop` reads
+`figures/snapshots/panels.csv` (`name,key,page,x0,y0,x1,y1,caption`, boxes in PDF points from
+the top left) and writes PNGs at 220 dpi. Keep the spec file so the panels are reproducible.
+
+**Rules**:
+
+- Crop the figure only: no caption text, no running text, no page furniture. The report writes
+  its own caption.
+- Only from retrieved open access PDFs. Every caption ends with the source citation, and the
+  report's verification notes state that panels are reproduced from the cited papers.
+- Never edit pixels, relabel, or recolor a reproduced panel. If it needs explanation, put it in
+  the caption.
+- Group related panels into one figure with lettered sub panels, for example "the data", "the
+  methods", "downstream use", rather than many single panels.
+- Look at every crop before using it, the same final gate as for plots.
+
 ## Final gate
 
 Render, then look at every figure: label collisions, overflow, a colliding title, an unreadable
