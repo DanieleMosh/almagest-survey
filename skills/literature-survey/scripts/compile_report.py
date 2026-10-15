@@ -22,7 +22,7 @@ from pathlib import Path
 
 
 def run(cmd: list[str], cwd: Path) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, timeout=300)
+    return subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, errors="replace", timeout=300)
 
 
 def page_count(pdf: Path, log_text: str) -> str:
