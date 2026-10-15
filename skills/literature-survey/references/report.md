@@ -14,6 +14,10 @@ who did it best, what the data really is, and where the field is building toward
 | 4 | Data and ground truth provenance: where training data comes from, label quality, the coverage gap matrix |
 | 5 | Hypotheses (3 to 5, from future work sections plus verified gaps), outlook, verification notes, references |
 
+Paper figure panels (see `references/plotting.md`) add roughly one to two pages: place "the data"
+panels on page 2 next to the dataset description, "the methods" panels next to the taxonomy, and
+"downstream use" panels next to the provenance or outlook section. With them, accept 6 to 7 pages.
+
 Squeeze rule: when content overflows, cut prose before cutting tables, cut tables before cutting
 figures, and never cut the verification notes.
 
